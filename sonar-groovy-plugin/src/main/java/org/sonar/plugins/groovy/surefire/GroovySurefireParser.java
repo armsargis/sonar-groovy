@@ -20,7 +20,6 @@
 package org.sonar.plugins.groovy.surefire;
 
 import org.apache.commons.lang3.StringUtils;
-import org.sonar.api.batch.ScannerSide;
 import org.sonar.api.batch.fs.FilePredicate;
 import org.sonar.api.batch.fs.FilePredicates;
 import org.sonar.api.batch.fs.FileSystem;
@@ -29,6 +28,7 @@ import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
+import org.sonar.api.scanner.ScannerSide;
 import org.sonar.api.test.MutableTestPlan;
 import org.sonar.api.test.TestCase;
 import org.sonar.api.utils.MessageException;

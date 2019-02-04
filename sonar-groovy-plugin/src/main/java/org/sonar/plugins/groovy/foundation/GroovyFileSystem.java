@@ -19,12 +19,12 @@
  */
 package org.sonar.plugins.groovy.foundation;
 
-import org.sonar.api.batch.ScannerSide;
 import org.sonar.api.batch.fs.FilePredicate;
 import org.sonar.api.batch.fs.FilePredicates;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.InputFile.Type;
+import org.sonar.api.scanner.ScannerSide;
 
 import javax.annotation.CheckForNull;
 import java.io.File;

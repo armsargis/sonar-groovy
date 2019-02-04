@@ -20,11 +20,11 @@
 package org.sonar.plugins.groovy.jacoco;
 
 import org.sonar.api.PropertyType;
-import org.sonar.api.batch.ScannerSide;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.config.PropertyDefinition;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Qualifiers;
+import org.sonar.api.scanner.ScannerSide;
 import org.sonar.plugins.groovy.foundation.Groovy;
 
 import java.util.Arrays;
