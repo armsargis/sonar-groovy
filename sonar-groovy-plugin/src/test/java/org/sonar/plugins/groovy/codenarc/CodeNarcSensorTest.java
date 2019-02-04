@@ -35,9 +35,7 @@ import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.config.PropertyDefinitions;
 import org.sonar.api.config.internal.MapSettings;
-import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.rule.RuleKey;
-import org.sonar.api.rules.ActiveRule;
 import org.sonar.plugins.groovy.GroovyPlugin;
 import org.sonar.plugins.groovy.foundation.Groovy;
 import org.sonar.plugins.groovy.foundation.GroovyFileSystem;
@@ -48,18 +46,13 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class CodeNarcSensorTest {
 
-    private RulesProfile profile;
     private CodeNarcSensor sensor;
-    private Groovy groovy;
     private SensorContextTester sensorContextTester;
 
     @Rule
@@ -67,15 +60,11 @@ public class CodeNarcSensorTest {
 
     @Before
     public void setUp() throws Exception {
-
         sensorContextTester = SensorContextTester.create(temp.newFolder().toPath());
         sensorContextTester.fileSystem().setWorkDir(temp.newFolder().toPath());
 
-        profile = mock(RulesProfile.class);
-
         sensorContextTester.setSettings(new MapSettings(new PropertyDefinitions(GroovyPlugin.class)));
-        groovy = new Groovy(sensorContextTester.settings());
-        sensor = new CodeNarcSensor(profile, new GroovyFileSystem(sensorContextTester.fileSystem()));
+        sensor = new CodeNarcSensor(new GroovyFileSystem(sensorContextTester.fileSystem()));
     }
 
     @Test
@@ -158,16 +147,11 @@ public class CodeNarcSensorTest {
 
     @Test
     public void should_run_code_narc() throws IOException {
-
         addFileWithContent("src/sample.groovy", "package source\nclass SourceFile1 {\n}");
 
         ActiveRulesBuilder activeRulesBuilder = new ActiveRulesBuilder();
         activeRulesBuilder = activateRule(activeRulesBuilder, "org.codenarc.rule.basic.EmptyClassRule", "EmptyClass");
         sensorContextTester.setActiveRules(activeRulesBuilder.build());
-
-        ActiveRule activeRule = mock(ActiveRule.class);
-        when(activeRule.getRuleKey()).thenReturn("org.codenarc.rule.basic.EmptyClassRule");
-        when(profile.getActiveRulesByRepository(CodeNarcRulesDefinition.REPOSITORY_KEY)).thenReturn(Arrays.asList(activeRule));
 
         sensor.execute(sensorContextTester);
 
@@ -199,10 +183,6 @@ public class CodeNarcSensorTest {
         ActiveRulesBuilder activeRulesBuilder = new ActiveRulesBuilder();
         activeRulesBuilder = activateRule(activeRulesBuilder, "org.codenarc.rule.basic.EmptyClassRule", "EmptyClass");
         sensorContextTester.setActiveRules(activeRulesBuilder.build());
-
-        ActiveRule activeRule = mock(ActiveRule.class);
-        when(activeRule.getRuleKey()).thenReturn("org.codenarc.rule.basic.EmptyClassRule");
-        when(profile.getActiveRulesByRepository(CodeNarcRulesDefinition.REPOSITORY_KEY)).thenReturn(Arrays.asList(activeRule));
 
         sensor.execute(sensorContextTester);
 
