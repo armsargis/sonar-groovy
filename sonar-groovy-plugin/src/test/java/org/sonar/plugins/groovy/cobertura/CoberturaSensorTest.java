@@ -112,7 +112,7 @@ public class CoberturaSensorTest {
                     // The first class in the test coverage.xml is a java class and the rest are groovy
                     firstCall = false;
                     return new DefaultInputFile(getIndexedFile("fake.java", "java"), f -> {
-                        f.setMetadata(new Metadata(Integer.MAX_VALUE, 0, "", new int[0], 0));
+                        f.setMetadata(new Metadata(Integer.MAX_VALUE, 0, "", new int[0], new int[0], 0));
                     });
                 }
 
@@ -122,7 +122,7 @@ public class CoberturaSensorTest {
                 if (!groovyFilesByName.containsKey(fileName)) {
                     // store groovy file as default input files
                     groovyFile = new DefaultInputFile(getIndexedFile(fileName, Groovy.KEY), f -> {
-                        f.setMetadata(new Metadata(Integer.MAX_VALUE, 0, "", new int[0], 0));
+                        f.setMetadata(new Metadata(Integer.MAX_VALUE, 0, "", new int[0], new int[0], 0));
                     });
                     groovyFilesByName.put(fileName, groovyFile);
                 }

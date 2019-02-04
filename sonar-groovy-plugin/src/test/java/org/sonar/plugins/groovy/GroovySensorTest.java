@@ -24,10 +24,10 @@ import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.sonar.api.batch.fs.internal.DefaultFileSystem;
 import org.sonar.api.batch.fs.internal.DefaultIndexedFile;
-import org.sonar.api.batch.fs.internal.DefaultInputDir;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
 import org.sonar.api.batch.fs.internal.FileMetadata;
 import org.sonar.api.batch.fs.internal.Metadata;
+import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.config.Settings;
@@ -88,7 +88,11 @@ public class GroovySensorTest {
         File sourceFile = new File(sourceDir, "Greeting.groovy");
 
         fileSystem = context.fileSystem();
-        fileSystem.add(new DefaultInputDir("", sourceDir.getPath()));
+
+        DefaultInputFile inputFile = new TestInputFileBuilder("", "src/main/java/org/apache/struts/Action.java")
+                .setModuleBaseDir(sourceDir.toPath()).build();
+
+        fileSystem.add(inputFile);
 
         Metadata metadata = new FileMetadata().readMetadata(
                 Files.newBufferedReader(sourceFile.toPath(), StandardCharsets.UTF_8)

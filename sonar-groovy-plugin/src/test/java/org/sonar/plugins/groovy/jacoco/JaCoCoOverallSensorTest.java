@@ -76,7 +76,7 @@ public class JaCoCoOverallSensorTest {
 
         DefaultIndexedFile abcde = new DefaultIndexedFile("ABCDE", Paths.get("."), "example/Hello.groovy", Groovy.KEY);
 
-        inputFile = new DefaultInputFile(abcde, f -> f.setMetadata(new Metadata(50, 0, "", new int[0], 0)));
+        inputFile = new DefaultInputFile(abcde, f -> f.setMetadata(new Metadata(50, 0, "", new int[0], new int[0], 0)));
 
         context.fileSystem().add(inputFile);
 
