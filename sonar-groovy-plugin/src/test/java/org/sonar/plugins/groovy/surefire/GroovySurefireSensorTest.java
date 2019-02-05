@@ -31,7 +31,6 @@ import org.sonar.api.batch.fs.internal.SensorStrategy;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
-import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.scan.filesystem.PathResolver;
@@ -57,11 +56,9 @@ import static org.mockito.Mockito.when;
 public class GroovySurefireSensorTest {
 
     private DefaultFileSystem fs = new DefaultFileSystem(new File("."));
-    private ResourcePerspectives perspectives;
     private GroovySurefireSensor surefireSensor;
     private final PathResolver pathResolver = new PathResolver();
     private Groovy groovy;
-    private SensorContext context;
 
     @Before
     public void before() {
@@ -71,15 +68,12 @@ public class GroovySurefireSensorTest {
         DefaultInputFile groovyFile = new DefaultInputFile(indexedFile, f -> {});
 
         fs.add(groovyFile);
-        perspectives = mock(ResourcePerspectives.class);
-
-        context = mock(SensorContext.class);
 
         Settings settings = mock(Settings.class);
         when(settings.getStringArray(GroovyPlugin.FILE_SUFFIXES_KEY)).thenReturn(new String[]{".groovy", "grvy"});
         groovy = new Groovy(settings);
 
-        GroovySurefireParser parser = spy(new GroovySurefireParser(groovy, perspectives, fs));
+        GroovySurefireParser parser = spy(new GroovySurefireParser(groovy, fs));
 
         doAnswer(
                 (Answer<InputFile>) invocation -> inputFile((String) invocation.getArguments()[0])
@@ -90,7 +84,7 @@ public class GroovySurefireSensorTest {
 
     @Test
     public void test_description() {
-        surefireSensor = new GroovySurefireSensor(new GroovySurefireParser(groovy, perspectives, fs), mock(Settings.class), fs, pathResolver);
+        surefireSensor = new GroovySurefireSensor(new GroovySurefireParser(groovy, fs), mock(Settings.class), fs, pathResolver);
         DefaultSensorDescriptor defaultSensorDescriptor = new DefaultSensorDescriptor();
         surefireSensor.describe(defaultSensorDescriptor);
         assertThat(defaultSensorDescriptor.languages()).containsOnly(Groovy.KEY);
